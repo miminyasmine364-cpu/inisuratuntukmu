@@ -1,86 +1,131 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Untukmu</title>
+    <title>Surat Untuk Azka</title>
     <style>
         * {
             box-sizing: border-box;
             font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background-color: #fbeef1;
+            /* Background gradasi warna pink romantis */
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
+            overflow: hidden;
+            position: relative;
         }
+
+        /* --- Efek Love Berjalan / Melayang --- */
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 20px;
+            animation: floatUp 6s linear infinite;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-110vh) scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* --- Kotak Surat (Card) --- */
         .card {
-            background: white;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
             padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(255, 107, 129, 0.25);
             max-width: 450px;
             width: 100%;
             text-align: center;
-            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            border: 2px solid rgba(255, 255, 255, 0.6);
         }
         .content {
             font-size: 16px;
             line-height: 1.6;
             color: #444;
-            min-height: 120px;
+            min-height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 25px;
+            font-weight: 500;
+            white-space: pre-line; /* Mempertahankan baris baru */
         }
         .btn {
-            background-color: #ff6b81;
+            background-color: #ff4757;
             color: white;
             border: none;
-            padding: 12px 28px;
+            padding: 12px 30px;
             font-size: 15px;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
             transition: background 0.2s, transform 0.1s;
         }
         .btn:hover {
-            background-color: #ff4757;
+            background-color: #ff3344;
+            transform: translateY(-2px);
         }
         .btn:active {
             transform: scale(0.96);
         }
         .page-indicator {
             font-size: 12px;
-            color: #aaa;
+            color: #888;
             margin-top: 15px;
         }
     </style>
 </head>
 <body>
 
+    <!-- Wadah untuk love yang berjalan/melayang -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
     <div class="card">
         <div id="letterContent" class="content">
-            <!-- hai azka ini surat untuk kamu -->
-            Hai! sayangg aku kasih ini sebagai tanda permintaan maaf ku yang tulus
+            Hai! sayangg aku kasih ini sebagai tanda permintaan maaf ku yang tulus ❤️
         </div>
         <button id="nextBtn" class="btn" onclick="nextLetter()">Lanjut</button>
-        <div id="pageIndicator" class="page-indicator">Halaman 1 dari 3</div>
+        <div id="pageIndicator" class="page-indicator">Halaman 1 dari 4</div>
     </div>
 
     <script>
-        // Tulis semua isi suratmu di dalam array ini:
+        // Isi suratmu dimasukkan ke dalam array di bawah ini:
         const letters = [
-            "hai azkaa maafin yasmin yaa udah sering ngecewain kamu, bikin susah kamu dan masih banyak lagi sih
-             maapin yaa sayangg and.. makasih ya azka udah selalu berjuang di dalam hubungan kita ini yasmin sebenarnya..
-             cuma mau ngetes azka kuat apa ngga sama yasmin pokok maaf dan makasihh yaaa",
-            "yasminn sayangg azkaa banyak banyak makasihh udah mau mengalah untuk semua 
-             maaf ya sayang yasmin belum bisa jadi yang terbaik buat azka, semoga yasmin bisa berubah yaa.",
+            "Hai! sayangg aku kasih ini sebagai tanda permintaan maaf ku yang tulus ❤️",
+            "hai azkaa maafin yasmin yaa udah sering ngecewain kamu, bikin susah kamu dan masih banyak lagi sih maapin yaa sayangg and.. makasih ya azka udah selalu berjuang di dalam hubungan kita ini yasmin sebenarnya.. cuma mau ngetes azka kuat apa ngga sama yasmin pokok maaf dan makasihh yaaa",
+            "yasminn sayangg azkaa banyak banyak makasihh udah mau mengalah untuk semua\nmaaf ya sayang yasmin belum bisa jadi yang terbaik buat azka, semoga yasmin bisa berubah yaa.",
             "itu aja yaa sayangg, I LOVE U ❤️"
         ];
 
@@ -92,14 +137,33 @@
                 document.getElementById('letterContent').innerText = letters[currentIndex];
                 document.getElementById('pageIndicator').innerText = `Halaman ${currentIndex + 1} dari ${letters.length}`;
                 
-                // Jika sudah sampai pesan terakhir, ubah teks tombol
                 if (currentIndex === letters.length - 1) {
                     document.getElementById('nextBtn').innerText = "Selesai";
                 }
             } else {
-                alert("Kamu sudah membaca semua suratnya!");
+                alert("Kamu sudah membaca semua suratnya! ❤️");
             }
         }
+
+        // Efek membuat love berjalan/melayang di latar belakang
+        function createHeart() {
+            const container = document.getElementById('heartsContainer');
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            
+            container.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 7000);
+        }
+
+        setInterval(createHeart, 400);
     </script>
 
 </body>
